@@ -80,6 +80,12 @@ export default function Cars() {
     );
   };
 
+  if (status === STATUS.ERROR) {
+    return (
+      <div className="app__error">An error occured while fetching. :(</div>
+    );
+  }
+
   return (
     <div className="cars">
       <Loader status={status} />

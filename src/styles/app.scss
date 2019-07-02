@@ -1,5 +1,11 @@
 @import '_mixins.scss';
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -27,7 +33,14 @@ body {
   }
 }
 
-.app-loader {
+.app__error {
+  display: flex;  
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+}
+
+.app__loader {
   background: #fff;
   width: 100%;
   height: 100%;
