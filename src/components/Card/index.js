@@ -26,7 +26,7 @@ const Card = ({ car }) => {
         <small className="text-muted">
           <a
             href={`https://www.gt40.com.br${car.carLink}`}
-            className="btn btn-block btn-primary stretched-link"
+            className="btn btn-block btn-light stretched-link"
             target="_blank"
           >
             Open details

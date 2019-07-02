@@ -29,7 +29,7 @@ export default function Cars() {
   }, [currentCars, firebaseCars]);
 
   const fetchGT40Cars = async () => {
-    console.log("started fetching gt40");
+    console.log("Started fetching GT40");
     setStatus(STATUS.RUNNING);
 
     const res = await fetch(endpoint, {
@@ -39,7 +39,7 @@ export default function Cars() {
     res
       .json()
       .then(res => {
-        console.log("finished fetching gt40");
+        console.log("Finished fetching GT40");
         setCurrentCars(res);
         setStatus(STATUS.SUCCESS);
       })
@@ -50,13 +50,13 @@ export default function Cars() {
   };
 
   const fetchPersisted = () => {
-    console.log("started fetching firebase");
+    console.log("Started fetching Firebase");
     setStatus(STATUS.RUNNING);
 
     ref.on(
       "value",
       function(snapshot) {
-        console.log("finished fetching firebase");
+        console.log("Finished fetching Firebase");
         setFirebaseCars(snapshot.val().cars);
         setLastUpdate(snapshot.val().updatedAt);
         setStatus(STATUS.SUCCESS);
@@ -69,7 +69,7 @@ export default function Cars() {
   };
 
   const updatePersisted = () => {
-    console.log("started updating firebase");
+    console.log("Started updating Firebase");
     setStatus(STATUS.RUNNING);
 
     ref.set({
@@ -80,6 +80,7 @@ export default function Cars() {
         console.log(`Updating Firebase data failed: ${error}`);
         setStatus(STATUS.ERROR);
       } else {
+        console.log("Finished updating Firebase");
         setStatus(STATUS.SUCCESS);
       }
     });
@@ -109,7 +110,7 @@ export default function Cars() {
       <blockquote className="blockquote text-center">
         <p className="mb-0">GT40 list with price check</p>
         {lastUpdate > 0 && <footer className="blockquote-footer">Last updated at {format(parseFloat(lastUpdate, 10), 'DD/MM/YYYY hh:mm')}</footer>}
-        {currentCars.length > 0 && <button type="button" className="btn btn-primary mt-2" onClick={() => updatePersisted()}>Update firebase</button>}
+        {currentCars.length > 0 && <button type="button" className="btn btn-primary mt-2" onClick={() => updatePersisted()}>Update Firebase</button>}
       </blockquote>
       <div className="car__list">
         {comparedCars.map(car => (
