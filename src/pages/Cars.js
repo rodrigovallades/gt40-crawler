@@ -16,6 +16,7 @@ export default function Cars() {
 
   useEffect(() => {
     fetchPersisted();
+    fetchGT40Cars();
   }, []);
 
   useEffect(() => {
@@ -24,12 +25,6 @@ export default function Cars() {
       setComparedCars(comparedCars);
     }
   }, [currentCars, firebaseCars]);
-
-  useEffect(() => {
-    if (firebaseCars.length) {
-      fetchGT40Cars();
-    }
-  }, [firebaseCars]);
 
   const fetchGT40Cars = async () => {
     console.log("started fetching gt40");
