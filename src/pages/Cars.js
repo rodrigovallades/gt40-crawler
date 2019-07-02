@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as firebase from "firebase/app";
 import "firebase/database";
+import format from 'date-fns/format';
 
 import Card from "../components/Card";
 import Loader from "../components/Loader";
@@ -11,8 +12,9 @@ export default function Cars() {
   const [firebaseCars, setFirebaseCars] = useState([]);
   const [currentCars, setCurrentCars] = useState([]);
   const [comparedCars, setComparedCars] = useState([]);
+  const [lastUpdate, setLastUpdate] = useState(0);
   const [status, setStatus] = useState("");
-  const ref = firebase.database().ref("cars");
+  const ref = firebase.database().ref();
 
   useEffect(() => {
     fetchPersisted();
@@ -29,6 +31,7 @@ export default function Cars() {
   const fetchGT40Cars = async () => {
     console.log("started fetching gt40");
     setStatus(STATUS.RUNNING);
+
     const res = await fetch(endpoint, {
       method: "GET"
     });
@@ -49,11 +52,13 @@ export default function Cars() {
   const fetchPersisted = () => {
     console.log("started fetching firebase");
     setStatus(STATUS.RUNNING);
+
     ref.on(
       "value",
       function(snapshot) {
         console.log("finished fetching firebase");
-        setFirebaseCars(snapshot.val());
+        setFirebaseCars(snapshot.val().cars);
+        setLastUpdate(snapshot.val().updatedAt);
         setStatus(STATUS.SUCCESS);
       },
       function(errorObject) {
@@ -62,6 +67,23 @@ export default function Cars() {
       }
     );
   };
+
+  const updatePersisted = () => {
+    console.log("started updating firebase");
+    setStatus(STATUS.RUNNING);
+
+    ref.set({
+      cars: currentCars,
+      updatedAt: Date.now()
+    }, function(error) {
+      if (error) {
+        console.log(`Updating Firebase data failed: ${error}`);
+        setStatus(STATUS.ERROR);
+      } else {
+        setStatus(STATUS.SUCCESS);
+      }
+    });
+  }
 
   const comparePrices = (a1, a2) => {
     const compared = a1.map(a => {
@@ -84,7 +106,11 @@ export default function Cars() {
   return (
     <div className="cars">
       <Loader status={status} />
-      <h1 className="text-center">GT40 list with price check</h1>
+      <blockquote className="blockquote text-center">
+        <p className="mb-0">GT40 list with price check</p>
+        {lastUpdate > 0 && <footer className="blockquote-footer">Last updated at {format(parseFloat(lastUpdate, 10), 'DD/MM/YYYY hh:mm')}</footer>}
+        {currentCars.length > 0 && <button type="button" className="btn btn-primary mt-2" onClick={() => updatePersisted()}>Update firebase</button>}
+      </blockquote>
       <div className="car__list">
         {comparedCars.map(car => (
           <Card key={`${car.modelId}${car.adsID}`} car={car} />
