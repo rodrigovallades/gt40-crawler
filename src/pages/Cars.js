@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as firebase from "firebase/app";
 import "firebase/database";
 import format from 'date-fns/format';
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import Card from "../components/Card";
 import Loader from "../components/Loader";
@@ -12,8 +13,10 @@ export default function Cars() {
   const [firebaseCars, setFirebaseCars] = useState([]);
   const [currentCars, setCurrentCars] = useState([]);
   const [comparedCars, setComparedCars] = useState([]);
+  const [paginatedCars, setPaginatedCars] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(0);
   const [status, setStatus] = useState("");
+  const [hasMoreScroll, setHasMoreScroll] = useState(true);
   const ref = firebase.database().ref();
 
   useEffect(() => {
@@ -27,6 +30,16 @@ export default function Cars() {
       setComparedCars(comparedCars);
     }
   }, [currentCars, firebaseCars]);
+
+  useEffect(() => {
+    lazyLoadCars()
+  }, [comparedCars]);
+
+  useEffect(() => {
+    if (paginatedCars.length > 0 && paginatedCars.length === paginatedCars.length + comparedCars.length) {
+      setHasMoreScroll(false);
+    }
+  }, [comparedCars, paginatedCars]);
 
   const fetchGT40Cars = async () => {
     console.log("Started fetching GT40");
@@ -104,19 +117,30 @@ export default function Cars() {
     );
   }
 
+  const lazyLoadCars = () => {
+    setPaginatedCars([...paginatedCars, ...comparedCars.splice(0, 20)]);
+  };
+
   return (
     <div className="cars">
-      <Loader status={status} />
       <blockquote className="blockquote text-center">
         <p className="mb-0">GT40 list with price check</p>
         {lastUpdate > 0 && <footer className="blockquote-footer">Last updated at {format(parseFloat(lastUpdate, 10), 'DD/MM/YYYY hh:mm')}</footer>}
         {currentCars.length > 0 && <button type="button" className="btn btn-primary mt-2" onClick={() => updatePersisted()}>Update Firebase</button>}
       </blockquote>
-      <div className="car__list">
-        {comparedCars.map(car => (
-          <Card key={`${car.modelId}${car.adsID}`} car={car} />
-        ))}
-      </div>
+      <InfiniteScroll
+          dataLength={paginatedCars.length}
+          endMessage={<p className="text-center">-- Showing all {paginatedCars.length} cars -- </p>}
+          hasMore={hasMoreScroll}
+          loader={<Loader status={status} />}
+          next={lazyLoadCars}
+        >
+        <div className="car__list">
+          {paginatedCars.map(car => (
+            <Card key={`${car.modelId}${car.adsID}`} car={car} />
+          ))}
+        </div>
+        </InfiniteScroll>
     </div>
   );
 }
