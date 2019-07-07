@@ -5,7 +5,8 @@ const Card = ({ car }) => {
   return (
     <div
       className={cx("card car", {
-        "price-changed text-white bg-success": car.oldPrice > 0
+        "price-changed text-white bg-success": car.oldPrice > 0 && car.oldPrice > car.price,
+        "price-changed text-white bg-danger": car.oldPrice > 0 && car.oldPrice < car.price,
       })}
     >
       <img
