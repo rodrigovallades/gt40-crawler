@@ -2,12 +2,13 @@
 
 The idea is to check if the prices from GT40 used car listing have changed since the last visit.
 
-To accomplish this, the app fetches the cars from GT40 endpoint and saves the response to Firebase.
+To accomplish this, the app fetches the cars from GT40 endpoint. The user can save the response to Firebase, so prices can be compared to last visit.
 
-## Installation
+## Live preview
 
-`npm install`
+https://codesandbox.io/s/github/rodrigovallades/gt40-crawler
 
-## Usage
+## Development
 
+`npm install`  
 `npm start`
