@@ -10,5 +10,6 @@ https://codesandbox.io/s/github/rodrigovallades/gt40-crawler
 
 ## Development
 
-`npm install`  
-`npm start`
+`npm run install`  
+`npm run start`  
+`npm run debug` (runs `npm run start` with extra debug information)

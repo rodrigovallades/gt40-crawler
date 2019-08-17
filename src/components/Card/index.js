@@ -2,6 +2,8 @@ import React from "react";
 import cx from "classnames";
 
 const Card = ({ car }) => {
+  const { REACT_APP_DEBUG: debug } = process.env;
+
   return (
     <div
       className={cx("card car", {
@@ -22,12 +24,18 @@ const Card = ({ car }) => {
             R$ {car.oldPrice}
           </p>
         )}
+        <p className="card-text">{car.id}</p>
+        {debug && (
+          <pre>{JSON.stringify(car, null, 2)}</pre>
+        )}
       </div>
       <div className="card-footer">
         <small className="text-muted">
           <a
             href={`https://www.gt40.com.br${car.carLink}`}
-            className="btn btn-block btn-light stretched-link"
+            className={cx("btn btn-block btn-light", {
+              "stretched-link": !debug,
+            })}
             target="_blank"
           >
             Open details
