@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 
 const Card = ({ car }) => {
   const { REACT_APP_DEBUG: debug } = process.env;
@@ -10,7 +11,7 @@ const Card = ({ car }) => {
         'price-changed text-white bg-success':
           car.oldPrice > 0 && car.oldPrice > car.price,
         'price-changed text-white bg-danger':
-          car.oldPrice > 0 && car.oldPrice < car.price
+          car.oldPrice > 0 && car.oldPrice < car.price,
       })}
     >
       <img
@@ -32,10 +33,11 @@ const Card = ({ car }) => {
       <div className="card-footer">
         <small className="text-muted">
           <a
-            href={`https://www.gt40.com.br${car.carLink}`}
             className={cx('btn btn-block btn-light', {
-              'stretched-link': !debug
+              'stretched-link': !debug,
             })}
+            href={`https://www.gt40.com.br${car.carLink}`}
+            rel="noreferrer"
             target="_blank"
           >
             Open details
@@ -44,6 +46,18 @@ const Card = ({ car }) => {
       </div>
     </div>
   );
+};
+
+Card.propTypes = {
+  car: PropTypes.shape({
+    oldPrice: PropTypes.string,
+    price: PropTypes.string,
+    image: PropTypes.string,
+    modelName: PropTypes.string,
+    modelDetails: PropTypes.string,
+    id: PropTypes.string,
+    carLink: PropTypes.string,
+  }).isRequired,
 };
 
 export default Card;
