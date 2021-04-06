@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb", "airbnb/hooks", "prettier", "prettier/react"],
+  "extends": ["airbnb", "airbnb/hooks", "prettier"],
   "parser": "babel-eslint",
   "root": true,
   "env": {
@@ -9,10 +9,11 @@
     "jest": true
   },
   "rules": {
-    "react/jsx-filename-extension": "off",
     "import/no-extraneous-dependencies": "off",
     "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
     "no-underscore-dangle": "off",
+    "react/jsx-filename-extension": "off",
     "react/style-prop-object": "off"
   },
   "plugins": ["react-hooks"]

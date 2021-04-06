@@ -1,14 +1,16 @@
-import React from "react";
-import cx from "classnames";
+import React from 'react';
+import cx from 'classnames';
 
 const Card = ({ car }) => {
   const { REACT_APP_DEBUG: debug } = process.env;
 
   return (
     <div
-      className={cx("card car", {
-        "price-changed text-white bg-success": car.oldPrice > 0 && car.oldPrice > car.price,
-        "price-changed text-white bg-danger": car.oldPrice > 0 && car.oldPrice < car.price,
+      className={cx('card car', {
+        'price-changed text-white bg-success':
+          car.oldPrice > 0 && car.oldPrice > car.price,
+        'price-changed text-white bg-danger':
+          car.oldPrice > 0 && car.oldPrice < car.price
       })}
     >
       <img
@@ -25,16 +27,14 @@ const Card = ({ car }) => {
           </p>
         )}
         <p className="card-text">{car.id}</p>
-        {debug && (
-          <pre>{JSON.stringify(car, null, 2)}</pre>
-        )}
+        {debug && <pre>{JSON.stringify(car, null, 2)}</pre>}
       </div>
       <div className="card-footer">
         <small className="text-muted">
           <a
             href={`https://www.gt40.com.br${car.carLink}`}
-            className={cx("btn btn-block btn-light", {
-              "stretched-link": !debug,
+            className={cx('btn btn-block btn-light', {
+              'stretched-link': !debug
             })}
             target="_blank"
           >

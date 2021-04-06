@@ -1,9 +1,9 @@
-import React from "react";
-import * as firebase from "firebase/app";
-import "firebase/database";
+import React from 'react';
+import * as firebase from 'firebase/app';
+import 'firebase/database';
 
-import Cars from "./pages/Cars";
-import { firebaseConfig } from "./config";
+import Cars from './pages/Cars';
+import { firebaseConfig } from './config';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
